@@ -4,7 +4,7 @@ class Usuario {
   String? _login;
   String? _senha;
 
-  Usuario({String? nome, int? codigo, String? senha, String? login}) {
+  Usuario({int? codigo, String? senha, String? login, String? nome}) {
     _senha = senha;
     _codigo = codigo;
     _nome = nome;

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'usuario.dart';
+import 'restaurante.dart';
+import 'tipo.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,7 +9,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
 
@@ -16,6 +17,20 @@ class MyApp extends StatelessWidget {
       login: "Rodolfo123",
       nome: "Rodolfo" ,
       senha: "@senhaforte123"
+    );
+
+    Tipo t = Tipo(
+      codigo:1,
+      nome: "japonesa"
+    );
+
+    Restaurante r = Restaurante(
+      codigo:1,
+      nome:"Balu Restaurante",
+        latitude: "22.6632",
+      longitude: "23.4432",
+        proprietario: u,
+        tipo: t
     );
 
     return MaterialApp(
@@ -30,7 +45,9 @@ class MyApp extends StatelessWidget {
                 Text("Nome: ${u.nome}"),
                 Text("Código: ${u.codigo}"),
                 Text("login:${u.login}"),
-                Text("senha: ${u.senha}")
+                Text("senha: ${u.senha}"),
+                Text("Proprietario ${r.proprietario?.nome}"),
+                Text("Tipo${r.tipo?.nome}")
               ],
         ),
       ),
