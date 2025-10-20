@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'packpage:mimpedir.dart';
-
+import 'packpage:mimpedir/dart';
+import 'packpage:mim/banco/tipo_DAO.dart';
 import 'banco/tipo_DAO.dart';
 
 class TelaCadRestaurante extends StatefulWidget{

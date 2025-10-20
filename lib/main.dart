@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'tela_login.dart';
 import 'restaurante.dart';
 import 'tipo.dart';
-
 void main() {
+
   runApp(const MyApp());
 }
 

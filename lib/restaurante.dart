@@ -12,7 +12,7 @@ class Restaurante{
   Tipo?  _tipo;
 
   Restaurante({int? codigo, String? nome, String? latitude, String? longitude,
-    Usuario? proprietario, Tipo? tipo}) {
+    Usuario? proprietario, Tipo? tipo, required culinaria}) {
 
     _codigo = codigo;
     _nome = nome;
@@ -29,6 +29,8 @@ int? get codigo => _codigo;
   String? get longitude => _longitude;
   Usuario? get proprietario => _proprietario;
   Tipo? get tipo => _tipo;
+
+  get culinaria => null;
   //setters
 //metodo ao estilo dart
 set codigo(int? codigo) => _codigo = codigo;

@@ -13,4 +13,6 @@ class UsuarioDAO{
 
         return resultado.isNotEmpty;
   }
+
+  static listar(cd) {}
 }
