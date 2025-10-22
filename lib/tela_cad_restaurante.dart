@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'packpage:mimpedir/dart';
-import 'packpage:mim/banco/tipo_DAO.dart';
+import 'package:mimpedir/banco/restaurante_DAO.dart';
+import 'package:mimpedir/tipo.dart';
 import 'banco/tipo_DAO.dart';
 
 class TelaCadRestaurante extends StatefulWidget{
@@ -9,7 +9,8 @@ class TelaCadRestaurante extends StatefulWidget{
     return TelaCadRestauranteState();
   }
 }
-class TelaCadRestaurante extends State<TelaCadRestaurante>{
+class TelaCadRestauranteState extends State<TelaCadRestaurante>{
+
   final TextEditingController nomeController = TextEditingController();
   final TextEditingController latitudeController = TextEditingController();
   final TextEditingController longitudeController = TextEditingController();
@@ -23,7 +24,7 @@ class TelaCadRestaurante extends State<TelaCadRestaurante>{
 }
 
 Future<void> carregarTipos() async{
-    final lista = await TipoDAO.listarTipos();
+    final lista = await TipoDAO.ListarTipos();
     setState(() {
       tiposCulinaria = lista;
     });
@@ -40,47 +41,71 @@ Future<void> carregarTipos() async{
             SizedBox(height: 40),
             Text("tipo de comida:"),
 
+
             DropdownButtonFormField<String>(
               value: culinariaSelecionada,
-              items: tiposCulinaria.map((tipo) {
-                return DropdownMenuItem<String>(
-                value: tipo.nome,
-               child: Text("${tipo.nome}")
+              items: tiposCulinaria.map((tipo){
+                return DropdownMenuItem <String>(
+                  value: tipo.descricao,
+                  child: Text("${tipo.descricao}"),
                 );
-            }).toList(),
-              onChanged: (String? value){
+              }).toList(),
+
+              onChanged: (String? novaCulinaria) {
                 setState(() {
-                  culinariaSelecionada = value;
+                  culinariaSelecionada = novaCulinaria;
                   Tipo tipoSelecionado = tiposCulinaria.firstWhere(
-                      (tipo) => tipo.descricao == value
+                      (tipo) => tipo.descricao == novaCulinaria,
                   );
-                  tipoCulinaria = tipoSelecionado.codigo;
+                  tiposCulinaria = tipoSelecionado.codigo;
                 });
-              }
+              },
             ),
-            TextFormField(
-              decoration: const InputDecoration(hintText: 'Nome do Restaurante'),
-              validator: (String? value) {},
-            ),
+
+        TextFormField(
+          decoration: const InputDecoration(hintText: 'nome do restaurante'),
+          validator: (String? value) {},
+          controller:  nomeController,
+        ),
+
         TextFormField(
           decoration: const InputDecoration(hintText: 'Latitude'),
           validator: (String? value) {},
+          controller: latitudeController,
         ),
         TextFormField(
           decoration: const InputDecoration(hintText: 'Longitude'),
           validator: (String? value) {},
+          controller: longitudeController,
         ),
           SizedBox(height: 50),
-            ElevatedButton(onPressed: (){}, child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(Icons.save),
-        Text("Cadastrar")
-      ],
-    ))
+            ElevatedButton(onPressed: () async {
+              final sucesso = await RestauranteDAO.cadastrarRestaurante(
+                nomeController.text, latitudeController.text, longitudeController.text, tipoCulinaria);
+              String msg = 'Erro: não cadstro. Verifique os dados.';
+             Color corFundo = Colors.red;
+
+             if(sucesso > 0){
+               msg = ' "${nomeController.text}" cadastrado com suceso! ID $sucesso';
+               corFundo = Colors.green;
+            }
+
+             SnackBar(
+                content: Text(msg),
+                backgroundColor: corFundo,
+               duration: Duration(seconds: 5),
+             );
+
+        }, child: Row(
+       mainAxisAlignment: MainAxisAlignment.center,
+       children: [
+      Icon(Icons.save),
+     Text("Cadastrar")
+     ],
+      ))
         ],
-      ),
-      ),
-    );
+    ),
+  ),
+  );
   }
 }

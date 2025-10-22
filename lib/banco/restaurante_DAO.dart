@@ -1,6 +1,6 @@
-import 'package:mimpedir/banco/database_helper.dart';
-import 'package:mimpedir/banco/tipo_DAO.dart';
-import 'package:mimpedir/banco/usuario_dao.dart';
+import './database_helper.dart';
+import './tipo_DAO.dart';
+import './usuario_dao.dart';
 import '../restaurante.dart';
 import '../tipo.dart';
 
@@ -31,7 +31,7 @@ static Future<Restaurante> listar(int? cd) async {
     nome: resultado.first['nm_restaurante'] as String,
     latitude: resultado.first['latitude_restaurante'] as String,
     longitude: resultado.first['longitude_restaurante'] as String,
-    culinaria: await tipoDAO.listar(resultado.first['cd_tipo'] as int) as Tipo
+    culinaria: await TipoDAO.listar(resultado.first['cd_tipo'] as int) as Tipo
   );
 }
 
@@ -58,26 +58,22 @@ static Future<Restaurante> listar(int? cd) async {
     }).toList();
 }
 
-static Future<int> cadastrarRestaurante(String? nome, String? latitude,
-String? longitude, int? tipo) async
-{
-
-final db = await
-DatabaseHelper.getDataBase();
-
+static Future<int> cadastrarRestaurante(String? nomeRestaurante, String? latitude,
+String? longitude, int? tipo) async{
+    final db = await DatabaseHelper.getDataBase();
 final dadosRestaurantes = {
 
-  'nm_restaurante': nome,
+  'cd_usuario': 1,
+  'cd_tipo': tipo,
+  'nm_restaurante': nomeRestaurante,
   'latitude_restaurante': latitude,
   'longitude_restaurante': longitude,
-  'cd_tipo': tipo,
-  'cd_usuario': UsuarioDAO.usuarioLogado.codigo
 };
 try {
 final idRestaurante = await db.insert('tb_restaurante', dadosRestaurantes);
 return idRestaurante;
 }catch(e){
-print("Erro ao Cadastrar: $e");
+print("Erro ao Cadastrar restauarante $e");
 return -1;
 }
 
